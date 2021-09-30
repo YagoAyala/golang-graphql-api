@@ -1,0 +1,47 @@
+"""
+This enumeration indicates whether to return results in ascending or descending order
+"""
+enum SortEnum {
+  ASC
+  DESC
+}
+
+"""
+Defines a filter that matches the input exactly.
+"""
+input FilterEqualTypeInput {
+  """
+  A string to filter on
+  """
+  eq: String
+
+  """
+  An array of values to filter on
+  """
+  in: [String]
+}
+
+"""
+Defines a filter that performs a fuzzy search.
+"""
+input FilterMatchTypeInput {
+  """
+  One or more words to filter on
+  """
+  match: String
+}
+
+"""
+Defines a filter that matches a range of values, such as prices or dates.
+"""
+input FilterRangeTypeInput {
+  """
+  The beginning of the range
+  """
+  from: String 
+
+  """
+  The end of the range
+  """
+  to: String
+}

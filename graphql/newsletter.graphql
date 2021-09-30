@@ -1,0 +1,50 @@
+type Newsletter {
+  uid: UUID!
+  email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type NewsletterList {
+  totalCount: Int!
+  items: [Newsletter!]
+}
+
+input CreateNewsletterInput {
+  email: String!
+}
+
+input UpdateNewsletterInput {
+  email: String!
+}
+
+input NewsletterFilterInput {
+  uid: FilterEqualTypeInput
+  email: FilterMatchTypeInput
+  createdAt: FilterRangeTypeInput
+  updatedAt: FilterRangeTypeInput
+}
+
+input NewsletterSortInput {
+  uid: SortEnum
+  email: SortEnum
+  createdAt: SortEnum
+  updatedAt: SortEnum
+}
+
+extend type Query {
+  newsletter(uid: UUID!): Newsletter
+  newsletters(
+    search: String,
+    filter: NewsletterFilterInput,
+    limit: Int = 30,
+    page: Int = 1,
+    sort: NewsletterSortInput
+  ): NewsletterList
+}
+
+extend type Mutation {
+  createNewsletter(input: CreateNewsletterInput!): Newsletter
+  updateNewsletter(uid: UUID!, input: UpdateNewsletterInput!): Newsletter
+  deleteNewsletter(uid: UUID!): String
+}

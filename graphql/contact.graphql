@@ -1,0 +1,69 @@
+type Contact {
+  uid: UUID!
+  name: String!
+  email: String!
+  phoneNumber: String!
+  message: String!
+  isRead: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ContactList {
+  totalCount: Int!
+  items: [Contact!]
+}
+
+input CreateContactInput {
+  name: String!
+  email: String!
+  phoneNumber: String!
+  message: String!
+  isRead: Boolean
+}
+
+input UpdateContactInput {
+  name: String
+  email: String
+  phoneNumber: String
+  message: String
+  isRead: Boolean
+}
+
+input ContactFilterInput {
+  uid: FilterEqualTypeInput
+  name: FilterMatchTypeInput
+  email: FilterMatchTypeInput
+  phoneNumber: FilterMatchTypeInput
+  message: FilterMatchTypeInput
+  isRead: FilterEqualTypeInput
+  createdAt: FilterRangeTypeInput
+  updatedAt: FilterRangeTypeInput
+}
+
+input ContactSortInput {
+  uid: SortEnum
+  name: SortEnum
+  email: SortEnum
+  phoneNumber: SortEnum  
+  isRead: SortEnum
+  createdAt: SortEnum
+  updatedAt: SortEnum
+}
+
+extend type Query {
+  contact(uid: UUID!): Contact
+  contacts(
+    search: String,
+    filter: ContactFilterInput,
+    limit: Int = 30,
+    page: Int = 1,
+    sort: ContactSortInput
+  ): ContactList!
+}
+
+extend type Mutation {
+  createContact(input: CreateContactInput!): Contact
+  updateContact(uid: UUID!, input: UpdateContactInput!): Contact
+  deleteContact(uid: UUID!): String
+}
