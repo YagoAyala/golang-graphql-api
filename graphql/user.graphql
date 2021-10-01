@@ -1,0 +1,66 @@
+type User {
+  uid: UUID!
+  name: String!
+  username: String!
+  password: String!
+  picture: String!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserList {
+  totalCount: Int!
+  items: [User!]
+}
+
+input CreateUserInput {
+  name: String!
+  username: String!
+  password: String!
+  picture: String!
+  isActive: Boolean!
+}
+
+input UpdateUserInput {
+  name: String!
+  username: String!
+  password: String!
+  picture: String!
+  isActive: Boolean!
+}
+
+input UserFilterInput {
+  uid: FilterEqualTypeInput
+  name: FilterMatchTypeInput
+  username: FilterMatchTypeInput
+  isActive: FilterEqualTypeInput
+  createdAt: FilterRangeTypeInput
+  updatedAt: FilterRangeTypeInput
+}
+
+input UserSortInput {
+  uid: SortEnum
+  name: SortEnum
+  username: SortEnum
+  isActive: SortEnum
+  createdAt: SortEnum
+  updatedAt: SortEnum
+}
+
+extend type Query {
+  user(uid: UUID!): User
+  users(
+    search: String,
+    filter: UserFilterInput,
+    limit: Int = 30,
+    page: Int = 1,
+    sort: UserSortInput
+  ): UserList
+}
+
+extend type Mutation {
+  createUser(input: CreateUserInput!): User
+  updateUser(uid: UUID!, input: UpdateUserInput!): User
+  deleteUser(uid: UUID!): String
+}
